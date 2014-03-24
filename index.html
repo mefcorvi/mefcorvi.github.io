@@ -1,0 +1,611 @@
+﻿<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>TypeScript - типизированный JavaScript от Microsoft.</title>
+
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Hakim El Hattab">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/style.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>TypeScript</h1>
+                    <h2>Типизированный JavaScript от Microsoft</h2>
+					<p>
+						<small>Булат Айкаев / <a href="http://twitter.com/mefcorvi">@mefcorvi</a></small>
+					</p>
+				</section>
+
+                <section>
+                    <h2>Несколько фактов о TypeScript</h2>
+                    <ul>
+                        <li><p><hl>TypeScript</hl> - это новый язык от Microsoft</p></li>
+                        <li><p>Автор языка - <a href="http://ru.wikipedia.org/wiki/%D0%A5%D0%B5%D0%B9%D0%BB%D1%81%D0%B1%D0%B5%D1%80%D0%B3,_%D0%90%D0%BD%D0%B4%D0%B5%D1%80%D1%81">Андерс Хейлсберг</a>, создавший Turbo Pascal, Delphi и C#</p></li>
+                        <li><p><hl>TypeScript</hl> - это Open Source проект под Apache 2.0 лицензией</p></li>
+                        <li>На текущий момент уже поддерживается в <b>Resharper 8</b>, <b>PhpStorm/WebStorm 6</b>, <b>Cloud9 IDE</b>. Интегрирован в <b>VS2013</b>.</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Причины появления TypeScript</h2>
+                    <ul>
+                        <li class="fragment"><p>Динамическая типизация увеличивает риск и сложность поддержки. Юнит-тесты спасают, но <a href="http://evanfarrer.blogspot.ca/2012/06/unit-testing-isnt-enough-you-need.html">не всегда</a>.</p></li>
+                        <li class="fragment"><p>JavaScript в 1995 проектировался не для крупных веб-приложений. <b>ECMAScript 6</b> всё ещё не принят, но <b>нужен уже сейчас</b>.</p></li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Кто уже использует TypeScript</h2>
+                    <ul>
+                        <li class="fragment">Компилятор языка <hl>TypeScript</hl> написан на самом же TypeScript.</li>
+                        <li class="fragment"><a href="http://blogs.msdn.com/b/bharry/archive/2012/10/24/typescript-a-real-world-story-of-adoption-in-tfs.aspx">TFS Web Access</a></li>
+                        <li class="fragment"><a href="http://blog.fuselabs.org/post/37196309164/good-morning-its-a-big-day-for-us">So.cl</a> - социальная сеть от Microsoft</li>
+                        <li class="fragment">Игровой движок <a href="http://hardcodeded.blogspot.jp/2013/02/mostly-painlessly-migrating-3d-game.html">Turbulenz</a> (более 100,000 строк кода)</li>
+                        <li class="fragment"><a href="https://www.touchdevelop.com/">TouchDevelop</a> - WYSIWYG инструмент для создания мобильных приложений</li>
+                        <li class="fragment">Также используется в Bing, XBox Music, Zud.io (Azure Storage management), Away3D (3d engine), и других...</li>
+                    </ul>
+                </section>
+                <section class="stack">
+                    <section data-transition="fade">
+                        <h2>Что такое TypeScript?</h2>
+                        <blockquote class="fragment"><p>“TypeScript is a language for application-scale development.”&nbsp;<small>&copy; Microsoft</small></p></blockquote>
+                        <p class="fragment"><hl>TypeScript</hl> - это <b>надмножество</b> языка JavaScript со <b>статической типизацией</b>, частично реализующее <b>ECMAScript 6</b></p>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>TypeScript - это надмножество над JS</h2>
+                        <p>Любой JavaScript код - это уже <hl>TypeScript</hl> <b class="fragment">с точки зрения синтаксиса.</b></p>
+                        <pre class="fragment"><code class="javascript">
+ var a = "1";
+ var b = 1;
+ b = a; // Error "Build: Cannot convert 'string' to 'number'."
+                            </code></pre>
+                        <pre class="fragment"><code class="javascript">
+ var a = "1";
+ var b: any = 1;
+ b = a; // No errors
+                            </code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>TypeScript компилируется в JavaScript</h2>
+                        <table>
+                            <tr>
+                                <td><pre><code class="javascript">class Greeter {
+    greeting: string;
+    constructor(message: string) {
+        this.greeting = message;
+    }
+    greet() {
+        return "Hello, " + this.greeting;
+    }
+}</code></pre></td>
+                                <td><pre><code class="javascript">var Greeter = (function () {
+    function Greeter(message) {
+        this.greeting = message;
+    }
+    Greeter.prototype.greet = function () {
+        return "Hello, " + this.greeting;
+    };
+    return Greeter;
+})();</code></pre></td>
+                            </tr>
+                        </table>
+                        <p><small>Использует node.js</small></p>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Поддержка в VS</h2>
+                        <ul>
+                            <li>Продвинутый <b>Intellisense</b>, благодаря статической типизации</li>
+                            <li>Полная поддержка отладки, благодаря <b>Source Maps</b>.</li>
+                            <li>Поддержка <b>JSDoc</b></li>
+                            <li>Встраивается в <b>билд</b> процесс</li>
+                            <li>Базовые возможности <b>рефакторинга</b>. С Resharper больше.</li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section data-transition="fade">
+                        <h2>Обзор синтаксиса TypeScript</h2>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Указание типа</h2>
+                        <pre><code class="javascript">var a: number = 1;</code></pre>
+                        <pre><code class="javascript">function sum(a: number, b: number): number {
+    return a + b;
+}</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Примитивные типы</h2>
+                        <p>Идентичны типам в JavaScript: <b>string</b>, <b>number</b>, <b>boolean</b>. Плюс тип <b>any</b>.</p>
+                        <pre><code class="javascript">var s: string = "I'm a string!";
+var n: number = 1.1;
+var b: boolean = true;</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Массивы</h2>
+                        <pre><code class="javascript">var cars: string[] = [ "AUDI A3", "BMW X6", "PEUGEOT 3008" ];
+for (var car in cars) {
+    console.log(car); // car: any
+}
+
+for (var i = 0; i < cars.length; i++) {
+    console.log(cars[i]); // cars[i]: string
+}
+
+cars.forEach(function(car) { console.log(car) }); // car: string
+var items: any[] = [ "Item1", 2, false ];
+
+var multidimensional: string[][] = [
+    ["1 1", "2 1"],
+    ["1 2", "2 2"]
+];
+</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Enum</h2>
+                        <pre><code class="actionscript">enum Colors {
+    Red = 1,
+    Blue = 2,
+    Green = 10
+} 
+
+console.log(Colors.Red); // 1
+var redString = Colors[1]; // "Red"</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Классы и интерфейсы</h2>
+                        <pre><code class="actionscript">interface IAnimal {
+    name: string;
+}
+
+class Animal implements IAnimal {
+    constructor(public name: string) {
+    }
+}
+
+var dog: IAnimal = new Animal('Tuzik');
+alert(dog.name);</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Структурная типизация для интерфейсов</h2>
+                        <pre><code class="actionscript">interface IAnimal {
+    name: string;
+}
+
+function showName(animal: IAnimal) {
+    console.log(animal.name);
+}
+
+showName({
+    name: 'Freddy'
+});</code></pre><p><small>Кроме того, все интерфейсы условно "partial".</small></p>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Члены класса и их видимость</h2>
+                        <pre><code class="actionscript">class Animal {
+    private static counter: number = 0;
+    public name: string;
+	
+    constructor() {
+        Animal.counter++;
+    }
+	
+    get prop(): string { return this.name; } // Only ECMA 5
+    set prop(value: string) { this.name = value; } // Only ECMA 5
+	
+    public method() {}
+	
+    private secretMethod() {}
+}
+var a: Animal;
+alert(a.prop);</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Наследование</h2>
+                        <pre><code class="actionscript">class Animal {
+    constructor(public name: string) {
+    }
+    public voice() {
+        console.log(this.name);
+    }
+}
+
+class Dog extends Animal {
+    public voice() {
+        super.voice();
+        console.log('I\'m a dog');
+    }
+}
+
+var a: Animal = new Dog('test');
+a.voice();</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Лямбда-выражения</h2>
+                        <h3>Или же Arrow Functions</h3>
+                        <pre><code class="actionscript">var a = (a: number, b: number) => a + b;
+
+function map(list: number[], func: (n: number) => number) {
+    var result: number[] = [];
+    for (var i = 0; i < list.length; i++) {
+        result.push(func(list[i]));
+    }
+    return result;
+}
+
+var squares = map([1,2,3,4,5], n => n * n);
+console.log(squares);</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>this и arrow functions</h2>
+                        <pre><code class="actionscript">class MyClass {
+    private n: number = 10;
+	
+    constructor() {
+        var log1 = () => console.log(this.n); // 10
+		
+        var log2 = function() {
+            console.log(this.n); // undefined because this: any
+        }
+    }
+}</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Приведение типов</h2>
+                        <pre><code class="actionscript">var a: any = "1";
+var b: number = &lt;number&gt;a;
+// no errors, but now we have a string in a number</code></pre>
+                        <ul>
+                            <li><p>Позволяет приводить только типы, <b>структурно идентичные</b> между собой. И <b>any</b>.</p></li>
+                            <li><p>Приведение типов - исключительно <b>compile-time</b> операция. Никаких ошибок в runtime.</p></li>
+                        </ul>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Генерики</h2>
+                        <pre><code class="actionscript">interface IAnimal {
+    name: string;
+}
+
+class Dog implements IAnimal {
+    public name: string;
+}
+
+class Population&lt;T extends IAnimal&gt; {
+    private _animals: T[];
+    public add(animal: T) {
+        this._animals.push(animal);
+    }
+}
+var dogs = new Population&lt;Dog&gt;();
+dogs.add(new Dog());
+var some = new Population&lt;{ name: string }&gt;(); // так тоже можно</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Генерики и магия</h2>
+                        <pre><code class="actionscript">interface IType&lt;T&gt; {
+    new(name: string): T;
+} 
+
+class Animal {
+    constructor(public name: string) {}
+}
+
+class Dog extends Animal {}
+
+function factory&lt;T extends Animal&gt;(type: IType&lt;T&gt;, name: string) {
+    return new type(name);
+}
+
+var dog = factory(Dog, "Freddy"); // dog: Dog
+console.log(dog.name);</code></pre>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Ambient определения</h2>
+                        <p>Необходимы для интеграции со сторонним кодом.</p>
+                        <pre><code class="actionscript">declare class Animal {
+    name: string;
+}
+
+var dog: Animal = new Animal();
+dog.name = 'Freddy';</code></pre>
+                        <p>Обычно используются в .d.ts файлах</p>
+                    </section>
+                    <section data-transition="fade">
+                        <h2>Осталось за кадром</h2>
+                        <ul>
+                            <li>Перегрузка методов</li>
+                            <li>Методы с переменным числом параметров</li>
+                            <li>Опциональные параметры и поля</li>
+                            <li>Параметры со значением по-умолчанию</li>
+                        </ul>
+                        <pre><code class="actionscript">var sum = (a: number, b: number, c: number = a + b) => console.log(c);</code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>Модули в TypeScript</h2>
+                        <ul>
+                            <li><p><b>Internal</b> модули</p></li>
+                            <li><p><b>External</b> модули</p></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Internal модули</h2>
+                        <pre><code class="actionscript">module My.A {
+    export class ClassA {
+    }
+}
+module My.B {
+    export class ClassB extends My.A.ClassA {
+    }
+}
+</code></pre>
+                        <p>Выступают в роли пространств имен.</p>
+                    </section>
+                    <section>
+                        <h2>External модули</h2>
+                        <pre><code class="actionscript">// a.ts
+export class ClassA {
+}
+
+// b.ts
+import a = require("a");
+export class ClassB {
+    public v: a.ClassA = new a.ClassA();
+}</code></pre>
+                        <p>Могут быть скомпилированы в AMD формат, или в CommonJS</p>
+                    </section>
+                    <section>
+                        <h2>AMD</h2>
+                        <pre><code class="actionscript">// a.js
+define(["require", "exports"], function(require, exports) {
+    var ClassA = (function () {
+        function ClassA() {}
+        return ClassA;
+    })();
+    exports.ClassA = ClassA;
+});
+// b.js
+define(["require", "exports", "a"], function(require, exports, a) {
+    var ClassB = (function () {
+        function ClassB() { this.v = new a.ClassA(); }
+        return ClassB;
+    })();
+    exports.ClassB = ClassB;
+});
+</code></pre>
+                    </section>
+                    <section>
+                        <h2>CommonJS</h2>
+                        <pre><code class="actionscript">// a.js
+var ClassA = (function () {
+    function ClassA() {}
+    return ClassA;
+})();
+exports.ClassA = ClassA;
+
+// b.js
+var a = require("a");
+var ClassB = (function () {
+    function ClassB() { this.v = new a.ClassA(); }
+    return ClassB;
+})();
+exports.ClassB = ClassB;</code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h2>TypeScript и Angular.JS</h2>
+                        <ul>
+                            <li><p>Поддержка типизации требует писать чуть больше кода.</p></li>
+                            <li><p>Типы полей в $scope не гарантируют безопасности.</p></li>
+                            <li><p>Полезно в основном для сервисов.</p></li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h2>Пример контроллера</h2>
+                        <pre style="width:100%; margin: 0"><code class="actionscript" style="max-height: 800px; width: 100%;">/// &lt;reference path="_references.ts" /&gt;
+module MirGames {
+    export class ActivationNotificationController {
+        static $inject = ['$scope', '$element', 'apiService'];
+
+        constructor(private $scope: IActivationNotificationControllerScope, private $element: JQuery, private apiService: Core.IApiService) {
+            this.$scope.sendNotification = () => this.sendNotification();
+            this.$scope.notificationSent = false;
+        }
+
+        public sendNotification() {
+            this.$scope.notificationSent = false;
+            var command: MirGames.Domain.Users.Commands.ResendActivationCommand = {};
+            this.apiService.executeCommand('ResendActivationCommand', command, () => {
+                this.$scope.$apply(() => {
+                    this.$scope.notificationSent = true;
+                });
+            });
+        }
+    }
+
+    export interface IActivationNotificationControllerScope extends ng.IScope {
+        sendNotification(): void;
+        notificationSent: boolean;
+    }
+}</code></pre>
+                    </section>
+                    <section>
+                        <h2>Пример директивы</h2>
+                        <pre style="width:100%; margin: 0"><code class="actionscript" style="max-height: 800px; width: 100%;">angular
+    .module('ng')
+    .directive('ngFocused', ['$timeout', ($timeout: ng.ITimeoutService) => {
+        return {
+            link: function (scope: ng.IScope, element: JQuery, attrs: any) {
+                scope.$watch(attrs.ngFocused, (val: boolean) => {
+                    if (angular.isDefined(val) && val) {
+                        $timeout(() => { element[0].focus(); });
+                    }
+                }, true);
+                element.bind('blur', () => {
+                    if (angular.isDefined(attrs.ngFocused)) {
+                        scope.$apply(() => {
+                            scope.$eval(attrs.ngFocused + '=false');
+                        });
+                    }
+                });
+            }
+        };
+    }])</code></pre>
+                    </section>                </section>
+                <section data-transition="fade">
+                    <section>
+                        <h2>От чего TypeScript не спасает</h2>
+                    </section>
+                    <section>
+                        <h3>1. Забытые точки с запятой</h3>
+                        <table style="margin: 0 auto">
+                            <tr>
+                                <td>
+                                    <pre><code class="javascript">function optionalSemicolons()
+{
+    return
+    {
+        a: "Hello"
+    }
+}
+// optionalSemicolos: () => void</code></pre>
+                                </td>
+                                <td>
+                                    <pre><code class="javascript">function optionalSemicolons() {
+    return;
+     {
+        a:
+        "Hello";
+    }
+    ;
+}</code></pre>
+                                </td>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h3>2. Сложение объектов и строк</h3>
+                        <table style="margin: 0 auto">
+                            <tr>
+                                <td>
+                                    <pre><code class="javascript">var a = 1 + "1"; // type of a is a string</code></pre>
+                                </td>
+                                <td>
+                                    <pre><code class="javascript">var a = 1 + "1";</code></pre>
+                                </td>
+                            </tr>
+                        </table>
+                    </section>
+                    <section>
+                        <h3>3. Области видимости</h3>
+                        <pre><code class="javascript">for (var i = 0; i < 10; i++) {
+ console.log(i); // 0..9
+} 
+var i: number;
+console.log(i); // 10</code></pre><hr />
+                        <pre><code class="javascript">console.log(x); // undefined
+var x = 1;</code></pre>
+                        <p>Нужно помнить, что TypeScript - это как ECMAScript 6 только с типами.</p>
+                    </section>
+                    <section>
+                        <h3>4. Не забываем указывать типы</h3>
+                        <pre><code class="javascript">var x; // Error: Variable 'x' implicitly has an 'any' type
+x = "foo";
+x = 2;</code></pre>
+                        <p>Всегда. Всегда включайте опцию <b>NoImplicitAny</b>.</p>
+                    </section>
+                    <section>
+                        <h3>5. Кривые руки</h3>
+                        <img src="Pro_desu.gif" />
+                        <p>От кривых рук ничто не спасёт.</p>
+                    </section>
+                </section>
+                <section>
+                    <h2>Будущее TypeScript</h2>
+                    <h3>Roadmap</h3>
+                    <ul>
+                        <li>Async/Await</li>
+                        <li>Mixins</li>
+                        <li>Protected access</li>
+                        <li>Ещё больше возможностей из ECMAScript 6</li>
+                    </ul>
+                </section>
+                <section>
+                    <h2>Полезное для TypeScript разработчика</h2>
+                    <ul>
+                        <li><a href="https://github.com/borisyankov/DefinitelyTyped">DefinitelyTyped</a> - набор деклараций для популярных библиотек (>150)</li>
+                        <li><a href="http://visualstudiogallery.msdn.microsoft.com/56633663-6799-41d7-9df7-0f2a504ca361">WebEssentials</a> - расширение для Visual Studio</li>
+                        <li><a href="https://github.com/palantir/tslint">TSLint</a> - статический анализатор для TS</li>
+                        <li><a href="http://type.litesolutions.net/">TypeLITE</a> - генератор TS деклараций по .NET классам</li>
+                    </ul>
+                </section>
+                <section>
+                    <h1>Q&A</h1>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				backgroundTransition: 'slide',
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
