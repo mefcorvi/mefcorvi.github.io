@@ -1,0 +1,22 @@
+{
+  "background_color": "#f8f8f8",
+  "display": "standalone",
+  "icons": [
+    {
+      "sizes": "192x192",
+      "src": "/android-chrome-192x192.png",
+      "type": "image/png"
+    },
+    {
+      "sizes": "512x512",
+      "src": "/android-chrome-512x512.png",
+      "type": "image/png"
+    }
+  ],
+  "name": "MexExam - Examen de Conocimientos para la Naturalización",
+  "short_name": "MexExam",
+  "theme_color": "#3b001d",
+  "id": "/?source=pwa",
+  "start_url": "/?source=pwa",
+  "scope": "/"
+}
