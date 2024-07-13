@@ -1,1 +1,0 @@
-import{G as e,_ as a}from"./GeneralPage-CqMfCoGg.js";import{d as o,c as t,n,o as c}from"./index-GoY1k6i4.js";const l=o({__name:"OptionsPage",setup(m){return(s,u)=>(c(),t(e,{class:n(s.$style.page)},null,8,["class"]))}}),p="_page_1fuv0_1",_={page:p},r={$style:_},i=a(l,[["__cssModules",r]]);export{i as default};
