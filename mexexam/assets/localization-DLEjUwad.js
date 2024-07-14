@@ -1,0 +1,1 @@
+import{h as r,r as s}from"./index-DEfrshX-.js";const o={Start:"Начать",Settings:"Настройки",Language:"Язык","Dark theme":"Тёмная тема"},n={Start:"Empezar",Settings:"Ajustes",Language:"Idioma","Dark theme":"Tema oscuro"},c=r(()=>{const e={es:n,ru:o},t=s("es");return{locale:t,t:a=>e[t.value]&&e[t.value][a]||a}});export{c as u};
