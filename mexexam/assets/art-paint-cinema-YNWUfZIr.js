@@ -1,4 +1,4 @@
-const e={id:"bzymvt",title:"Artes II: Pintura y cine",ru:{title:""},questions:[{id:"y5kn8",type:"text",question:"Pintores mexicanos reconocidos",answer:`Jose Maria Velazco
+const e={id:"bzymvt",title:"Artes II: Pintura y cine",image:"art-lit-cinema.webp",ru:{title:""},questions:[{id:"y5kn8",type:"text",question:"Pintores mexicanos reconocidos",answer:`Jose Maria Velazco
 Diego Rivera
 Frida Khalo
 Rufino Tamayo
