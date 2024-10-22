@@ -1,0 +1,1 @@
+import{_ as s}from"./GeneralPage-BPubSzJ9.js";import{o as n,c as o,I as t,n as c}from"./index-F-FeFYvf.js";const a="_page_5jlit_1",l="_menu_5jlit_4",r={page:a,menu:l},_={};function m(e,i){return n(),o("div",{class:c(e.$style.menu)},[t(e.$slots,"default")],2)}const u={$style:r},f=s(_,[["render",m],["__cssModules",u]]);export{f as G};
