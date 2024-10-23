@@ -1,0 +1,1 @@
+import{_ as s}from"./GeneralPage-BQB1LHDS.js";import{o,c as e,I as n,n as r}from"./index-U-5K9r7o.js";const c="_button_zdi99_1",a={button:c},l={};function _(t,d){return o(),e("button",{"data-rpl":"",class:r(t.$style.button)},[n(t.$slots,"default")],2)}const u={$style:a},i=s(l,[["render",_],["__cssModules",u]]);export{i as G};
