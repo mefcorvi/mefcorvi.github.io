@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_NAME = 'all-requests-cache-v3';
+const CACHE_NAME = 'all-requests-cache-v4';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -32,31 +32,18 @@ self.addEventListener('fetch', (event) => {
   const isJSOrCSS =
     urlWithoutHash.endsWith('.js') || urlWithoutHash.endsWith('.css');
 
-  // Create new request without hash fragment
-  const requestWithoutHash = new Request(urlWithoutHash, {
-    method: request.method,
-    headers: request.headers,
-    body: request.body,
-    mode: request.mode,
-    credentials: request.credentials,
-    cache: request.cache,
-    redirect: request.redirect,
-    referrer: request.referrer,
-    integrity: request.integrity
-  });
-
   if (isJSOrCSS) {
     // Cache-first strategy for JS and CSS files
     event.respondWith(
-      caches.match(requestWithoutHash).then((cachedResponse) => {
+      caches.match(urlWithoutHash).then((cachedResponse) => {
         if (cachedResponse) {
           return cachedResponse;
         }
 
-        return fetch(requestWithoutHash).then((networkResponse) => {
+        return fetch(request).then((networkResponse) => {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(requestWithoutHash, responseClone);
+            cache.put(urlWithoutHash, responseClone);
           });
           return networkResponse;
         });
@@ -65,16 +52,16 @@ self.addEventListener('fetch', (event) => {
   } else {
     // Network-first strategy for other paths
     event.respondWith(
-      fetch(requestWithoutHash)
+      fetch(request)
         .then((networkResponse) => {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(requestWithoutHash, responseClone);
+            cache.put(urlWithoutHash, responseClone);
           });
           return networkResponse;
         })
         .catch(() => {
-          return caches.match(requestWithoutHash).then((cachedResponse) => {
+          return caches.match(urlWithoutHash).then((cachedResponse) => {
             if (cachedResponse) {
               return cachedResponse;
             }
