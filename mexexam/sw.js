@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_NAME = 'all-requests-cache-v2';
+const CACHE_NAME = 'all-requests-cache-v3';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -27,21 +27,36 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
+  // Remove hash fragment from URL
+  const urlWithoutHash = url.origin + url.pathname + url.search;
   const isJSOrCSS =
-    url.pathname.endsWith('.js') || url.pathname.endsWith('.css');
+    urlWithoutHash.endsWith('.js') || urlWithoutHash.endsWith('.css');
+
+  // Create new request without hash fragment
+  const requestWithoutHash = new Request(urlWithoutHash, {
+    method: request.method,
+    headers: request.headers,
+    body: request.body,
+    mode: request.mode,
+    credentials: request.credentials,
+    cache: request.cache,
+    redirect: request.redirect,
+    referrer: request.referrer,
+    integrity: request.integrity
+  });
 
   if (isJSOrCSS) {
     // Cache-first strategy for JS and CSS files
     event.respondWith(
-      caches.match(request).then((cachedResponse) => {
+      caches.match(requestWithoutHash).then((cachedResponse) => {
         if (cachedResponse) {
           return cachedResponse;
         }
 
-        return fetch(request).then((networkResponse) => {
+        return fetch(requestWithoutHash).then((networkResponse) => {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone);
+            cache.put(requestWithoutHash, responseClone);
           });
           return networkResponse;
         });
@@ -50,16 +65,16 @@ self.addEventListener('fetch', (event) => {
   } else {
     // Network-first strategy for other paths
     event.respondWith(
-      fetch(request)
+      fetch(requestWithoutHash)
         .then((networkResponse) => {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
-            cache.put(request, responseClone);
+            cache.put(requestWithoutHash, responseClone);
           });
           return networkResponse;
         })
         .catch(() => {
-          return caches.match(request).then((cachedResponse) => {
+          return caches.match(requestWithoutHash).then((cachedResponse) => {
             if (cachedResponse) {
               return cachedResponse;
             }
