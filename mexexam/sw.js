@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_NAME = 'all-requests-cache-v1';
+const CACHE_NAME = 'all-requests-cache-v2';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
@@ -26,11 +26,31 @@ self.addEventListener('fetch', (event) => {
 
   if (request.method !== 'GET') return;
 
-  event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) return cachedResponse;
+  const url = new URL(request.url);
+  const isJSOrCSS =
+    url.pathname.endsWith('.js') || url.pathname.endsWith('.css');
 
-      return fetch(request)
+  if (isJSOrCSS) {
+    // Cache-first strategy for JS and CSS files
+    event.respondWith(
+      caches.match(request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
+        }
+
+        return fetch(request).then((networkResponse) => {
+          const responseClone = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(request, responseClone);
+          });
+          return networkResponse;
+        });
+      })
+    );
+  } else {
+    // Network-first strategy for other paths
+    event.respondWith(
+      fetch(request)
         .then((networkResponse) => {
           const responseClone = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -39,8 +59,13 @@ self.addEventListener('fetch', (event) => {
           return networkResponse;
         })
         .catch(() => {
-          return new Response('Offline', { status: 503 });
-        });
-    })
-  );
+          return caches.match(request).then((cachedResponse) => {
+            if (cachedResponse) {
+              return cachedResponse;
+            }
+            return new Response('Offline', { status: 503 });
+          });
+        })
+    );
+  }
 });
