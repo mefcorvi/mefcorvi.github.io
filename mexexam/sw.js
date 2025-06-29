@@ -29,10 +29,16 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(request.url);
   // Remove hash fragment from URL
   const urlWithoutHash = url.origin + url.pathname + url.search;
-  const isJSOrCSS =
-    urlWithoutHash.endsWith('.js') || urlWithoutHash.endsWith('.css');
+  const isStaticResource =
+    urlWithoutHash.endsWith('.js') ||
+    urlWithoutHash.endsWith('.css') ||
+    urlWithoutHash.endsWith('.png') ||
+    urlWithoutHash.endsWith('.jpg') ||
+    urlWithoutHash.endsWith('.jpeg') ||
+    urlWithoutHash.endsWith('.gif') ||
+    urlWithoutHash.endsWith('.svg');
 
-  if (isJSOrCSS) {
+  if (isStaticResource) {
     // Cache-first strategy for JS and CSS files
     event.respondWith(
       caches.match(urlWithoutHash).then((cachedResponse) => {
