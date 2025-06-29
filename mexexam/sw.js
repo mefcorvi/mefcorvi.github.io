@@ -36,7 +36,8 @@ self.addEventListener('fetch', (event) => {
     urlWithoutHash.endsWith('.jpg') ||
     urlWithoutHash.endsWith('.jpeg') ||
     urlWithoutHash.endsWith('.gif') ||
-    urlWithoutHash.endsWith('.svg');
+    urlWithoutHash.endsWith('.svg') ||
+    urlWithoutHash.endsWith('.ico');
 
   if (isStaticResource) {
     // Cache-first strategy for JS and CSS files
