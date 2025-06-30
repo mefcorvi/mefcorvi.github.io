@@ -1,1 +1,0 @@
-import{_ as s}from"./localization-DkyWKAVE.js";import{o,c as n,E as t,n as c}from"./index-Z7MhvD_Q.js";const a="_page_1odl7_1",l="_menu_1odl7_4",r={page:a,menu:l},_={};function m(e,d){return o(),n("div",{class:c(e.$style.menu)},[t(e.$slots,"default")],2)}const u={$style:r},i=s(_,[["render",m],["__cssModules",u]]);export{i as G};
