@@ -1,6 +1,6 @@
 // service-worker.js
 
-const CACHE_NAME = 'all-requests-cache-v4';
+const CACHE_NAME = 'all-requests-cache-v6';
 
 self.addEventListener('install', () => {
   self.skipWaiting();
