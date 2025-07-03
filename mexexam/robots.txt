@@ -1,2 +1,8 @@
 User-agent: *
-Allow: / 
+Allow: /
+
+# Sitemap
+Sitemap: https://mexexam.com/sitemap.xml
+
+# Disallow hash-based routes to prevent duplicate content
+Disallow: /#/ 

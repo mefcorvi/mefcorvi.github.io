@@ -1,0 +1,40 @@
+# Global headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Cache static assets
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+*.png
+  Cache-Control: public, max-age=31536000, immutable
+
+*.jpg
+  Cache-Control: public, max-age=31536000, immutable
+
+*.svg
+  Cache-Control: public, max-age=31536000, immutable
+
+*.ico
+  Cache-Control: public, max-age=31536000, immutable
+
+# Don't cache HTML files (for SPA updates)
+*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Sitemap
+/sitemap.xml
+  Cache-Control: public, max-age=86400
+
+# Robots.txt
+/robots.txt
+  Cache-Control: public, max-age=86400 

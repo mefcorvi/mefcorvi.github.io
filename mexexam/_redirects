@@ -1,0 +1,14 @@
+# Redirect www to non-www (or vice versa, choose your preference)
+www.mexexam.com/* https://mexexam.com/:splat 301!
+
+# Redirect old hash-based routes to new history-based routes (if migrating)
+/#/* /:splat 301!
+
+# Handle trailing slashes
+/*/ /:splat 301!
+
+# Force HTTPS
+http://mexexam.com/* https://mexexam.com/:splat 301!
+
+# SPA fallback - serve index.html for all routes that don't match static files
+/* /index.html 200 
